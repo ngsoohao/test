@@ -1,39 +1,40 @@
-var http=require('http');
-var fs=require('fs');
+const http = require('http');
+const fs = require('fs');
 
-http.createServer((req,res)=>{
-    if(req.url==='/'){
-        fs.readFile('index.html',function(err,data){
-            if (err) throw err;
-            res.writeHead(200,{'Content-Type':'text/html'});
-            res.write(data);
-            return res.end;
-        });
+const PORT = 8080;
+
+const server = http.createServer((req, res) => {
+  const url = req.url;
+  let filePath;
+
+  switch (url) {
+    case '/':
+      filePath = 'index.html';
+      break;
+    case '/about':
+      filePath = 'about.html';
+      break;
+    case '/contact-me':
+      filePath = 'contact-me.html';
+      break;
+    default:
+      filePath = '404.html';
+      break;
+  }
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.writeHead(404);
+      res.end('404 Page Not Found');
+    } else {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.write(data);
+      res.end();
     }
-    else if(req.url==='/about'){
-        fs.readFile('about.html',function(err,data){
-            if (err) throw err;
-            res.writeHead(200,{'Content-Type':'text/html'});
-            res.write(data);
-            return res.end;
-        });
-    }
-    else if(req.url==='/contact-me'){
-        fs.readFile('contact-me.html',function(err,data){
-            if (err) throw err;
-            res.writeHead(200,{'Content-Type':'text/html'});
-            res.write(data);
-            return res.end;
-        });
-    }
-    else{
-        fs.readFile('404.html',function(err,data){
-            if (err) throw err;
-            res.writeHead(200,{'Content-Type':'text/html'});
-            res.write(data);
-            return res.end;
-        });
-    }
-}).listen(6969,()=>{
-    console.log('Listeninig on port  6969.....');
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
