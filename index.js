@@ -38,3 +38,23 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+import React, { Component } from 'react'
+
+class App extends Component {
+    constructor() {
+        super()
+    }
+
+    {/* Javascript functions can be written here */}
+
+    render() {
+        return (
+            <div className="App">
+            Hello World!
+            </div>
+        )
+    }
+}
+
+export default App
